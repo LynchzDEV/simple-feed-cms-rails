@@ -1,0 +1,11 @@
+<!-- app/views/news/edit.html.erb -->
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <h1 class="text-2xl font-bold mb-6">Editing News Item</h1>
+
+  <%= render 'form', news: @news %>
+
+  <div class="mt-6 flex space-x-4">
+    <%= link_to 'Show', @news, class: "text-blue-600 hover:text-blue-800" %>
+    <%= link_to 'Back', news_index_path, class: "text-blue-600 hover:text-blue-800" %>
+  </div>
+</div>

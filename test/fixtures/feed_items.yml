@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  feedable: one
+  feedable_type: Feedable
+  published_at: 2025-03-13 15:15:22
+
+two:
+  feedable: two
+  feedable_type: Feedable
+  published_at: 2025-03-13 15:15:22

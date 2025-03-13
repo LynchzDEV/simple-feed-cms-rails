@@ -1,0 +1,82 @@
+<!-- app/views/feed/index.html.erb -->
+<div class="max-w-3xl mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-6">Content Feed</h1>
+
+  <!-- Filter tabs -->
+  <div class="mb-6 bg-white shadow rounded-lg p-4">
+    <div class="flex space-x-2">
+      <%= link_to "All", feed_path, class: "px-3 py-2 rounded-md #{params[:type].blank? ? 'bg-blue-600 text-white' : 'bg-gray-100'}" %>
+      <%= link_to "Posts", feed_path(type: 'post'), class: "px-3 py-2 rounded-md #{params[:type] == 'post' ? 'bg-blue-600 text-white' : 'bg-gray-100'}" %>
+      <%= link_to "Videos", feed_path(type: 'video'), class: "px-3 py-2 rounded-md #{params[:type] == 'video' ? 'bg-blue-600 text-white' : 'bg-gray-100'}" %>
+      <%= link_to "News", feed_path(type: 'news'), class: "px-3 py-2 rounded-md #{params[:type] == 'news' ? 'bg-blue-600 text-white' : 'bg-gray-100'}" %>
+    </div>
+  </div>
+
+  <!-- Feed items -->
+  <div class="space-y-6">
+    <% @feed_items.each do |feed_item| %>
+      <% feedable = feed_item.feedable %>
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="p-4 border-b">
+          <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold"><%= feedable.title %></h2>
+            <span class="text-sm text-gray-500">
+              <%= time_ago_in_words(feed_item.published_at) %> ago
+            </span>
+          </div>
+          <!-- Content type badge -->
+          <div class="mt-1">
+            <% case feed_item.feedable_type %>
+            <% when 'Post' %>
+              <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Post</span>
+            <% when 'Video' %>
+              <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Video</span>
+            <% when 'News' %>
+              <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">News</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="p-4">
+          <!-- Video-specific content -->
+          <% if feed_item.feedable_type == 'Video' %>
+            <div class="bg-gray-200 h-48 flex items-center justify-center mb-4 rounded">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p>Video file: <%= feedable.file %></p>
+          <% end %>
+
+          <p class="text-gray-700"><%= feedable.content %></p>
+
+          <!-- News-specific content -->
+          <% if feed_item.feedable_type == 'News' %>
+            <div class="mt-2">
+              <span class="text-sm text-gray-600">Source:
+                <%= link_to feedable.reference, feedable.reference, class: "text-blue-600 hover:underline", target: "_blank" %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="px-4 py-3 bg-gray-50 flex justify-end">
+          <% case feed_item.feedable_type %>
+          <% when 'Post' %>
+            <%= link_to "Read more", post_path(feedable), class: "text-blue-600 hover:underline" %>
+          <% when 'Video' %>
+            <%= link_to "Watch video", video_path(feedable), class: "text-blue-600 hover:underline" %>
+          <% when 'News' %>
+            <%= link_to "Read full story", news_path(feedable), class: "text-blue-600 hover:underline" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-6">
+    <%= paginate @feed_items %>
+  </div>
+</div>

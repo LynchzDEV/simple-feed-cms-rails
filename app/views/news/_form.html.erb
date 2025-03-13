@@ -1,0 +1,33 @@
+<!-- app/views/news/_form.html.erb -->
+<%= form_with(model: news, local: true, class: "space-y-6") do |form| %>
+  <% if news.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <h2><%= pluralize(news.errors.count, "error") %> prohibited this news from being saved:</h2>
+      <ul class="list-disc list-inside">
+        <% news.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_field :title, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :content, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_area :content, rows: 5, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :reference, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_field :reference, placeholder: "https://example.com/article", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    <p class="text-gray-500 text-xs mt-1">Enter the URL to the original source</p>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  </div>
+<% end %>
